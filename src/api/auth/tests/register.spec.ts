@@ -1,11 +1,12 @@
-import { Collection } from "mongodb";
-import { MongoConnection } from "../../../connection";
+import { MongoClient, Collection } from "mongodb";
 import { User } from "../../../domain/user";
 import { createUser } from "../../../shared/tests/users-utils";
 import { registerAccount } from "../functions/register";
+import config from "config";
+import usersDB from "../../../database/users";
 
-let dbConnection: MongoConnection;
 let usersCollection: Collection;
+let client: MongoClient;
 
 describe("Account registration", () => {
     // El username debe ser unico
@@ -13,22 +14,23 @@ describe("Account registration", () => {
     // Los campos son obligatorios
 
     beforeAll(async () => {
-        dbConnection = await MongoConnection.CreateConnection(
-            process.env.DB_URI
-        );
-        usersCollection = dbConnection.client
-            .db(process.env.DB_NAME)
+        client = await MongoClient.connect(config.get("dbURI"));
+        usersCollection = await client
+            .db(config.get("dbName"))
             .collection("users");
+        usersDB.injectDB(client);
     });
 
     afterAll(async () => {
         await usersCollection.drop();
-        await dbConnection.close();
+        await client.close();
     });
 
     it("should work when the data is correct", async () => {
         const user: User = createUser();
 
-        await registerAccount(user);
+        expect(async () => {
+            await registerAccount(user);
+        }).not.toThrow();
     });
 });

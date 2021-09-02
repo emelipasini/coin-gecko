@@ -1,20 +1,16 @@
+import { MongoClient } from "mongodb";
 import express from "express";
 import cors from "cors";
 import http from "http";
-import dotenv from "dotenv";
+import config from "config";
+import usersDB from "./src/database/users";
 
-import { authController } from "./api/auth/functions";
-
-dotenv.config();
+import { authController } from "./src/api/auth/functions";
 
 export const app = express();
 const server = http.createServer(app);
 
 app.use(cors());
-
-server.listen("4200", () => {
-    console.log("SERVER RUNNING IN PORT 4200...");
-});
 
 app.post("/auth/register", authController.register);
 app.post("/auth/login", authController.login);
@@ -22,5 +18,17 @@ app.post("/auth/login", authController.login);
 app.get("/", async (req, res) => {
     res.send("Hello world!");
 });
+
+MongoClient.connect(config.get("dbURI"))
+    .catch((err) => {
+        console.error(err.stack);
+        process.exit(1);
+    })
+    .then(async (client) => {
+        await usersDB.injectDB(client);
+        server.listen("4200", () => {
+            console.log("SERVER RUNNING IN PORT 4200...");
+        });
+    });
 
 // app.use("/auth", () => {});
