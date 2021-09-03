@@ -6,7 +6,7 @@ import config from "config";
 import usersDB from "./src/database/users";
 
 import { authController } from "./src/api/auth/functions";
-import { coinsController } from "./src/api/coins";
+import { coinsController } from "./src/api/coins/functions";
 
 export const app = express();
 const server = http.createServer(app);

@@ -5,7 +5,7 @@ import { User } from "../../../domain/user";
 export async function logout(req: Request, res: Response) {
     try {
         const userJwt = req.get("Authorization").slice("Bearer ".length);
-        const userObj: any = await User.validateToken(userJwt);
+        const userObj: any = User.validateToken(userJwt);
 
         let { error } = userObj;
         if (error) {

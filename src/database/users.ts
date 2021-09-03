@@ -44,6 +44,15 @@ export default class usersDB {
         }
     }
 
+    static async getUserSession(username: string) {
+        try {
+            return sessions.findOne({ username: username });
+        } catch (e) {
+            console.error(`Error occurred while retrieving user session, ${e}`);
+            return null;
+        }
+    }
+
     static async logoutUser(username: string) {
         try {
             await sessions.deleteOne({ username: username });
