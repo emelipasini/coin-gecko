@@ -21,4 +21,8 @@ export default class usersDB {
     static async addUser(userInfo: User) {
         await users.insertOne(userInfo);
     }
+
+    static async findUsername(username: string) {
+        return await users.findOne({ username });
+    }
 }
