@@ -33,6 +33,21 @@ export class User {
         );
     }
 
+    static validateToken(userJwt: string) {
+        return jwt.verify(userJwt, config.get("secret"), (error, res) => {
+            if (error) {
+                return { error };
+            }
+            return new User(
+                res.firstname,
+                res.lastname,
+                res.username,
+                "",
+                res.currency
+            );
+        });
+    }
+
     getJSONData() {
         return {
             firstname: this.firstname,

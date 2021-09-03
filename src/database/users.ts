@@ -43,4 +43,14 @@ export default class usersDB {
             return { error: e };
         }
     }
+
+    static async logoutUser(username: string) {
+        try {
+            await sessions.deleteOne({ username: username });
+            return { success: true };
+        } catch (e) {
+            console.error(`Error occurred while logging out user, ${e}`);
+            return { error: e };
+        }
+    }
 }

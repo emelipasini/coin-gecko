@@ -14,6 +14,7 @@ app.use(cors());
 
 app.post("/auth/register", authController.register);
 app.post("/auth/login", authController.login);
+app.post("/auth/logout", authController.logout);
 
 app.get("/", async (req, res) => {
     res.send("Hello world!");
