@@ -6,6 +6,7 @@ import config from "config";
 import usersDB from "./src/database/users";
 
 import { authController } from "./src/api/auth/functions";
+import { coinsController } from "./src/api/coins";
 
 export const app = express();
 const server = http.createServer(app);
@@ -15,6 +16,8 @@ app.use(cors());
 app.post("/auth/register", authController.register);
 app.post("/auth/login", authController.login);
 app.post("/auth/logout", authController.logout);
+
+app.get("/coins", coinsController.getCoins);
 
 app.get("/", async (req, res) => {
     res.send("Hello world!");

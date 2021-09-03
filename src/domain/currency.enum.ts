@@ -1,5 +1,5 @@
 export enum Currency {
-    EUR,
-    USD,
-    ARS,
+    eur,
+    usd,
+    ars,
 }

@@ -1,21 +1,18 @@
+import { randomUUID } from "crypto";
 import { name, random, datatype } from "faker";
 export { helpers } from "faker";
 import { User } from "../../domain/user";
 
 export function createUser() {
-    const user = new User();
+    const firstname = name.firstName();
+    const lastname = name.lastName();
+    const username = randomUUID();
+    const password = createPassword();
+    const currency = randomNumber(2);
 
-    user.firstname = name.firstName();
-    user.lastname = name.lastName();
-    user.username = createUsername();
-    user.password = createPassword();
-    user.currency = randomNumber(2);
+    const user = new User(firstname, lastname, username, password, currency);
 
     return user;
-}
-
-export function createUsername(): string {
-    return random.alphaNumeric(10);
 }
 
 export function createPassword(): string {
