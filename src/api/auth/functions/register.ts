@@ -1,12 +1,23 @@
 import { Request, Response } from "express";
 import { User } from "../../../domain/user";
 import usersDB from "../../../database/users";
+import bcrypt from "bcryptjs";
 
 export async function register(req: Request, res: Response) {
     try {
-        const { status, message } = await validateUser(
-            req.query as any as User
+        const userFromBody = req.query as any as User;
+
+        const userInfo = new User(
+            userFromBody.firstname,
+            userFromBody.lastname,
+            userFromBody.username,
+            userFromBody.password,
+            userFromBody.currency
         );
+
+        userInfo.password = await bcrypt.hash(userFromBody.password, 10);
+
+        const { status, message } = await validateUser(userInfo);
 
         return res.status(status).json({ message });
     } catch (error) {
