@@ -42,7 +42,7 @@ export class User {
                 res.firstname,
                 res.lastname,
                 res.username,
-                "",
+                null,
                 res.currency
             );
         });

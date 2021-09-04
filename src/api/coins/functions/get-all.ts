@@ -29,6 +29,7 @@ export async function getCoins(req: Request, res: Response) {
 
         for (const coin of coinsData.data) {
             allCoins.push({
+                id: coin.id,
                 name: coin.name,
                 currency: userCurrency,
                 price: coin.market_data.current_price[userCurrency],
