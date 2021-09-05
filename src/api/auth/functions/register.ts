@@ -7,6 +7,16 @@ export async function register(req: Request, res: Response) {
     try {
         const userFromBody = req.query as any as User;
 
+        const { status, message } = await validateAndSaveUser(userFromBody);
+
+        return res.status(status).json({ message });
+    } catch (e) {
+        res.status(500).json(e);
+    }
+}
+
+export async function validateAndSaveUser(userFromBody: User) {
+    try {
         const userInfo = new User(
             userFromBody.firstname,
             userFromBody.lastname,
@@ -15,19 +25,24 @@ export async function register(req: Request, res: Response) {
             userFromBody.currency
         );
 
-        userInfo.password = await bcrypt.hash(userFromBody.password, 10);
+        if (!passwordIsValid(userInfo.password)) {
+            return {
+                status: 400,
+                message: "Bad Request: Invalid password",
+            };
+        }
 
-        const { status, message } = await validateUser(userInfo);
+        if (await usernameExists(userInfo.username)) {
+            return {
+                status: 400,
+                message: "Bad Request: Username already exists",
+            };
+        }
 
-        return res.status(status).json({ message });
-    } catch (e) {
-        res.status(500).json(e);
-    }
-}
+        userInfo.password = await bcrypt.hash(userInfo.password, 10);
 
-export async function validateUser(userInfo: User) {
-    try {
         await usersDB.addUser(userInfo);
+
         return {
             status: 201,
             message: "User created",
@@ -37,9 +52,13 @@ export async function validateUser(userInfo: User) {
     }
 }
 
-export function passwordIsValid(password: string): boolean {
+function passwordIsValid(password: string): boolean {
     if (password.length < 8) {
         return false;
     }
     return true;
+}
+
+async function usernameExists(username: string) {
+    return await usersDB.findUsername(username);
 }

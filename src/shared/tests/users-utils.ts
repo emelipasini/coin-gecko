@@ -6,7 +6,7 @@ import { User } from "../../domain/user";
 export function createUser() {
     const firstname = name.firstName();
     const lastname = name.lastName();
-    const username = randomUUID();
+    const username = new Date().toISOString(); // Necesito que sea unico
     const password = createPassword();
     const currency = randomNumber(2);
 

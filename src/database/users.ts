@@ -31,7 +31,11 @@ export default class usersDB {
 
     static async findUsername(username: string) {
         try {
-            return await users.findOne({ username: username });
+            const user = await users.findOne({ username: username });
+            if (!user) {
+                return undefined;
+            }
+            return user;
         } catch (e) {
             console.error(`Error occurred while searching user, ${e}`);
             return { error: e };

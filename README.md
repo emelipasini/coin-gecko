@@ -7,6 +7,7 @@ Para la informacion de los usuarios tiene una base de datos en MongoDB.
 ## Levantar el proyecto
 
 Primero hay que completar los datos sensibles en la carpeta config como el nombre de la DB, la conexion con la misma, el puerto y la key para JSON Web Token y luego renombrar ambos archivos sacando el .example.
+IMPORTANTE: Hay un archivo para testing y otro para desarrollo, la base de datos para testing no debe ser la misma que para desarrollo porque para que los tests puedan correr en un ambiente aislado al finalizar el test se elimina la base de testing.
 
 Y luego por terminal en la carpeta raiz correr estos comandos
 
@@ -18,12 +19,23 @@ yarn tsc
 yarn start
 ```
 
+## Tests
+
+Para correr los tests hay dos comandos, uno general y otro especifico para correr un solo test.
+Al correr los tests automaticamente toma el entorno de testing que debe estar completo en la carpeta config.
+
+```bash
+yarn test
+
+yarn test register
+```
+
 ## Endpoints
 
 ### Usuarios
 
 -   [POST] /auth/register:
-    Espera firstname, lastname, username, password, currency (puede ser uno de estos valores: ars, usd, eur)
+    Espera firstname, lastname, username, password, currency (puede ser 0 para euros, 1 para dolares o 2 para pesos argentinos)
 
 -   [POST] /auth/login:
     Espera username y password y devuelve un token de JSON Web Token
