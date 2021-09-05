@@ -25,7 +25,7 @@ export async function addFavorite(req: Request, res: Response) {
 
         const response = {
             status: 200,
-            message: "success",
+            message: "Coin added successfully",
         };
 
         res.send(response);

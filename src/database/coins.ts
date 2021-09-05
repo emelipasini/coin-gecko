@@ -18,6 +18,15 @@ export default class coinsDB {
         }
     }
 
+    static async getFavorites(username: string) {
+        try {
+            return await coins.findOne({ username });
+        } catch (e) {
+            console.error(`Error occurred while logging in user, ${e}`);
+            return { error: e };
+        }
+    }
+
     static async addFavorite(username: string, coin: string) {
         try {
             const user = await coins.findOne({ username });
