@@ -4,6 +4,7 @@ import cors from "cors";
 import http from "http";
 import config from "config";
 import usersDB from "./src/database/users";
+import coinsDB from "./src/database/coins";
 
 import { authController } from "./src/api/auth/functions";
 import { coinsController } from "./src/api/coins/functions";
@@ -31,9 +32,8 @@ MongoClient.connect(config.get("dbURI"))
     })
     .then(async (client) => {
         await usersDB.injectDB(client);
+        await coinsDB.injectDB(client);
         server.listen("4200", () => {
             console.log("SERVER RUNNING IN PORT 4200...");
         });
     });
-
-// app.use("/auth", () => {});

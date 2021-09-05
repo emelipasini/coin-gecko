@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import usersDB from "../../../database/users";
+import coinsDB from "../../../database/coins";
 import { User } from "../../../domain/user";
 
 export async function addFavorite(req: Request, res: Response) {
@@ -21,7 +21,7 @@ export async function addFavorite(req: Request, res: Response) {
 
         const coinId = req.params.id;
 
-        await usersDB.addFavorite(userObj.username, coinId);
+        await coinsDB.addFavorite(userObj.username, coinId);
 
         const response = {
             status: 200,
