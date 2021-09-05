@@ -4,6 +4,12 @@ import { User } from "../../../domain/user";
 
 export async function logout(req: Request, res: Response) {
     try {
+        if (!req.get("Authorization")) {
+            return res
+                .status(401)
+                .send({ status: 401, message: "Unauthorized" });
+        }
+
         const userJwt = req.get("Authorization").slice("Bearer ".length);
         const userObj: any = User.validateToken(userJwt);
 

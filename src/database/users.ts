@@ -21,11 +21,21 @@ export default class usersDB {
     }
 
     static async addUser(userInfo: User) {
-        await users.insertOne(userInfo);
+        try {
+            await users.insertOne(userInfo);
+        } catch (e) {
+            console.error(`Error occurred while adding user, ${e}`);
+            return { error: e };
+        }
     }
 
     static async findUsername(username: string) {
-        return await users.findOne({ username: username });
+        try {
+            return await users.findOne({ username: username });
+        } catch (e) {
+            console.error(`Error occurred while searching user, ${e}`);
+            return { error: e };
+        }
     }
 
     static async loginUser(username: string, jwt: string) {

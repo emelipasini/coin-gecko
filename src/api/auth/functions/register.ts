@@ -20,8 +20,8 @@ export async function register(req: Request, res: Response) {
         const { status, message } = await validateUser(userInfo);
 
         return res.status(status).json({ message });
-    } catch (error) {
-        console.error(error);
+    } catch (e) {
+        res.status(500).json(e);
     }
 }
 
