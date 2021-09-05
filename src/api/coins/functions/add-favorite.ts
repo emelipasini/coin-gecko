@@ -18,18 +18,24 @@ export async function addFavorite(req: Request, res: Response) {
             res.status(401).json({ error });
             return;
         }
-
         const coinId = req.params.id;
-
-        await coinsDB.addFavorite(userObj.username, coinId);
-
-        const response = {
-            status: 200,
-            message: "Coin added successfully",
-        };
+        const response = await saveFavorite(userObj.username, coinId);
 
         res.send(response);
     } catch (e) {
         res.status(500).json(e);
+    }
+}
+
+export async function saveFavorite(username: string, coinId: string) {
+    try {
+        await coinsDB.addFavorite(username, coinId);
+
+        return {
+            status: 200,
+            message: "Coin added successfully",
+        };
+    } catch (error) {
+        return error;
     }
 }

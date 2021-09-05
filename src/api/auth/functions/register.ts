@@ -48,7 +48,7 @@ export async function validateAndSaveUser(userFromBody: User) {
             message: "User created",
         };
     } catch (error) {
-        console.error(error);
+        return error;
     }
 }
 

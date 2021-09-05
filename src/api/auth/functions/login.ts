@@ -23,39 +23,46 @@ export async function login(req: Request, res: Response) {
 }
 
 export async function validateAndLoginUser(username: string, password: string) {
-    let userData = await usersDB.findUsername(username);
-    if (!userData) {
-        return {
-            status: 401,
-            message: "Invalid credentials",
-        };
+    try {
+        let userData = await usersDB.findUsername(username);
+        if (!userData) {
+            return {
+                status: 401,
+                message: "Invalid credentials",
+            };
+        }
+
+        const passwordIsValid = await bcrypt.compare(
+            password,
+            userData.password
+        );
+        if (!passwordIsValid) {
+            return {
+                status: 401,
+                message: "Invalid credentials",
+            };
+        }
+
+        userData = new User(
+            userData.firstname,
+            userData.lastname,
+            userData.username,
+            userData.password,
+            userData.currency
+        );
+
+        const jwt = userData.generateToken();
+        const loginResponse = await usersDB.loginUser(userData.username, jwt);
+
+        if (!loginResponse.success) {
+            return {
+                status: 500,
+                message: loginResponse.error,
+            };
+        }
+        const info = userData.getJSONData();
+        return { jwt, info };
+    } catch (error) {
+        return error;
     }
-
-    const passwordIsValid = await bcrypt.compare(password, userData.password);
-    if (!passwordIsValid) {
-        return {
-            status: 401,
-            message: "Invalid credentials",
-        };
-    }
-
-    userData = new User(
-        userData.firstname,
-        userData.lastname,
-        userData.username,
-        userData.password,
-        userData.currency
-    );
-
-    const jwt = userData.generateToken();
-    const loginResponse = await usersDB.loginUser(userData.username, jwt);
-
-    if (!loginResponse.success) {
-        return {
-            status: 500,
-            message: loginResponse.error,
-        };
-    }
-    const info = userData.getJSONData();
-    return { jwt, info };
 }
