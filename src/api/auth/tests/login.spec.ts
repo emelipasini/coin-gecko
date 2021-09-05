@@ -7,6 +7,7 @@ import usersDB from "../../../database/users";
 import { validateAndSaveUser } from "../functions/register";
 
 let usersCollection: Collection;
+let sessionsCollection: Collection;
 let client: MongoClient;
 let user: User;
 
@@ -16,6 +17,9 @@ describe("Logging in account", () => {
         usersDB.injectDB(client);
 
         usersCollection = client.db(config.get("dbName")).collection("users");
+        sessionsCollection = client
+            .db(config.get("dbName"))
+            .collection("sessions");
 
         user = createUser();
         await validateAndSaveUser(user);
@@ -23,6 +27,7 @@ describe("Logging in account", () => {
 
     afterAll(async () => {
         await usersCollection.drop();
+        await sessionsCollection.drop();
         await client.close();
     });
 
