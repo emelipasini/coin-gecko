@@ -35,21 +35,21 @@ yarn test register
 ### Usuarios
 
 -   [POST] /auth/register:
-    Espera firstname, lastname, username, password, currency (puede ser 0 para euros, 1 para dolares o 2 para pesos argentinos)
+    Espera firstname, lastname, username, password, currency (puede ser 0 para euros, 1 para dolares o 2 para pesos argentinos).
 
 -   [POST] /auth/login:
-    Espera username y password y devuelve un token de JSON Web Token
+    Espera username y password y devuelve un token de JSON Web Token.
 
 -   [POST] /auth/logout:
-    Solo con el token desloguea al usuario y elimina el token de la DB
+    Solo con el token desloguea al usuario y elimina el token de la DB.
 
 ### Monedas
 
--   [GET] /coins:
-    Solo necesita el token de un usuario logueado porque muestra el precio de las monedas en la divisa favorita del usuario
+-   [GET] /coins/:page:
+    Solo necesita el token de un usuario logueado porque muestra el precio de las monedas en la divisa favorita del usuario. El parametro page es opcional y fija el numero de pagina que se muestra, el endpoint envia de a 100 monedas.
 
 -   [GET] /coins/top/:number:
-    Solo necesita el token del usuario logueado. El parametro de number es opcional y fija el maximo de monedas que se muestran, puede ir del 1 al 25, si no se envia el defecto es 25
+    Solo necesita el token del usuario logueado. El parametro de number es opcional y fija el maximo de monedas que se muestran, puede ir del 1 al 25, si no se envia el defecto es 25.
 
 -   [POST] /coins/favorites/:id:
-    Espera el token del usuario logueado y el id de la moneda que se quiere agregar a favoritos. Ej /coins/favorites/bitcoin
+    Espera el token del usuario logueado y el id de la moneda que se quiere agregar a favoritos. Ej /coins/favorites/bitcoin.

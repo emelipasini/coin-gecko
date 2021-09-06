@@ -18,13 +18,9 @@ app.post("/auth/register", authController.register);
 app.post("/auth/login", authController.login);
 app.post("/auth/logout", authController.logout);
 
-app.get("/coins", coinsController.getCoins);
+app.get("/coins/:page?", coinsController.getCoins);
 app.get("/coins/top/:number?", coinsController.getTop);
 app.post("/coins/favorites/:id", coinsController.addFavorite);
-
-app.get("/", async (req, res) => {
-    res.send("Hello world!");
-});
 
 MongoClient.connect(config.get("dbURI"))
     .catch((err) => {
