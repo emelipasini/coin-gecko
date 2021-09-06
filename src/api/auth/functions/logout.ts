@@ -5,23 +5,15 @@ import { User } from "../../../domain/user";
 
 export async function logout(req: Request, res: Response) {
     try {
-        if (!req.get("Authorization")) {
-            return res
-                .status(401)
-                .send({ status: 401, message: "Unauthorized" });
-        }
+        const userObj = req.query.userObj as any as User;
 
-        const userJwt = req.get("Authorization").slice("Bearer ".length);
-        const userObj: any = User.validateToken(userJwt);
-
-        let { error } = userObj;
-        if (error) {
-            res.status(401).json({ error });
-            return;
+        const session = await usersDB.getUserSession(userObj.username);
+        if (!session) {
+            return res.status(401).send({ message: "The session has expired" });
         }
 
         const logoutResult = await usersDB.logoutUser(userObj.username);
-        ({ error } = logoutResult);
+        const { error } = logoutResult;
         if (error) {
             res.status(500).json({ error });
             return;

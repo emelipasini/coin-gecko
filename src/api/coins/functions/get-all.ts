@@ -3,22 +3,15 @@ import axios from "axios";
 
 import { Currency } from "../../../domain/currency.enum";
 import { User } from "../../../domain/user";
+import usersDB from "../../../database/users";
 
 export async function getCoins(req: Request, res: Response) {
     try {
-        if (!req.get("Authorization")) {
-            return res
-                .status(401)
-                .send({ status: 401, message: "Unauthorized" });
-        }
+        const userObj = req.query.userObj as any as User;
 
-        const userJwt = req.get("Authorization").slice("Bearer ".length);
-        const userObj: any = User.validateToken(userJwt);
-
-        let { error } = userObj;
-        if (error) {
-            res.status(401).json({ error });
-            return;
+        const session = await usersDB.getUserSession(userObj.username);
+        if (!session) {
+            return res.status(401).send({ message: "The session has expired" });
         }
 
         const userCurrency = Currency[userObj.currency];
