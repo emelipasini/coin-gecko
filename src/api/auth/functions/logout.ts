@@ -18,6 +18,7 @@ export async function logout(req: Request, res: Response) {
             res.status(500).json({ error });
             return;
         }
+
         res.json(logoutResult);
     } catch (e) {
         res.status(500).json(e);
