@@ -48,6 +48,16 @@ describe("Account registration", () => {
         expect(res.message).toBe("Bad Request: Invalid password");
     });
 
+    it("should fail when the password is not alphanumeric", async () => {
+        const user: User = createUser();
+        user.password = "password";
+
+        const res = await validateAndSaveUser(user);
+
+        expect(res.status).toBe(400);
+        expect(res.message).toBe("Bad Request: Invalid password");
+    });
+
     it("should fail when the username already exists", async () => {
         const user: User = createUser();
         user.username = oldUser.username;

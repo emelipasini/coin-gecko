@@ -54,6 +54,12 @@ export async function validateAndSaveUser(userFromBody: User) {
 }
 
 function passwordIsValid(password: string): boolean {
+    const letter = /[a-zA-Z]/;
+    const number = /[0-9]/;
+    if (!(number.test(password) && letter.test(password))) {
+        return false;
+    }
+
     if (password.length < 8) {
         return false;
     }
