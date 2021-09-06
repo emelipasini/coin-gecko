@@ -1,6 +1,7 @@
-import { Currency } from "./currency.enum";
 import jwt from "jsonwebtoken";
 import config from "config";
+
+import { Currency } from "./currency.enum";
 
 export class User {
     firstname: string;

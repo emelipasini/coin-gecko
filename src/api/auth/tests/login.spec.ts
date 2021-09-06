@@ -1,9 +1,11 @@
 import { MongoClient, Collection } from "mongodb";
+import config from "config";
+
 import { User } from "../../../domain/user";
 import { createUser } from "../../../shared/tests/users-utils";
-import { validateAndLoginUser } from "../functions/login";
-import config from "config";
 import usersDB from "../../../database/users";
+
+import { validateAndLoginUser } from "../functions/login";
 import { validateAndSaveUser } from "../functions/register";
 
 let usersCollection: Collection;

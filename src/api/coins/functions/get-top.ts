@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import axios from "axios";
-import coinsDB from "../../../database/coins";
+
 import { Currency } from "../../../domain/currency.enum";
 import { User } from "../../../domain/user";
+import coinsDB from "../../../database/coins";
 
 export async function getTop(req: Request, res: Response) {
     try {

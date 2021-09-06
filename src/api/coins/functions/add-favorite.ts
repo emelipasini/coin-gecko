@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+
 import coinsDB from "../../../database/coins";
 import { User } from "../../../domain/user";
 

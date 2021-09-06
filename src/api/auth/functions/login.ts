@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
+
 import usersDB from "../../../database/users";
 import { User } from "../../../domain/user";
 

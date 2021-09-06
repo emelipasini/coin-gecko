@@ -1,5 +1,6 @@
 import CoinGecko from "coingecko-api";
 import { Request, Response } from "express";
+
 import { Currency } from "../../../domain/currency.enum";
 import { User } from "../../../domain/user";
 

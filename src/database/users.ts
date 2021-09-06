@@ -1,6 +1,7 @@
 import { Collection, MongoClient } from "mongodb";
-import { User } from "../domain/user";
 import config from "config";
+
+import { User } from "../domain/user";
 
 let users: Collection;
 let sessions: Collection;

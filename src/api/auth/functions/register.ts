@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
+import bcrypt from "bcryptjs";
+
 import { User } from "../../../domain/user";
 import usersDB from "../../../database/users";
-import bcrypt from "bcryptjs";
 
 export async function register(req: Request, res: Response) {
     try {

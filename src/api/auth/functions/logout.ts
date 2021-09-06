@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+
 import usersDB from "../../../database/users";
 import { User } from "../../../domain/user";
 

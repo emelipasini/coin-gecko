@@ -1,5 +1,6 @@
 import { Collection, MongoClient } from "mongodb";
 import config from "config";
+
 import { favoriteCoin } from "../domain/favoriteCoins";
 
 let coins: Collection;
