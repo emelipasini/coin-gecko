@@ -19,7 +19,7 @@ app.post("/auth/login", authController.login);
 app.post("/auth/logout", authController.logout);
 
 app.get("/coins", coinsController.getCoins);
-app.get("/coins/top", coinsController.getTop);
+app.get("/coins/top/:number?", coinsController.getTop);
 app.post("/coins/favorites/:id", coinsController.addFavorite);
 
 app.get("/", async (req, res) => {

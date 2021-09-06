@@ -1,5 +1,5 @@
-import CoinGecko from "coingecko-api";
 import { Request, Response } from "express";
+import axios from "axios";
 import coinsDB from "../../../database/coins";
 import { Currency } from "../../../domain/currency.enum";
 import { User } from "../../../domain/user";
@@ -21,29 +21,44 @@ export async function getTop(req: Request, res: Response) {
             return;
         }
 
-        const CoinGeckoClient = new CoinGecko();
-
         const faveCoins = await coinsDB.getFavorites(userObj.username);
-        const allCoins = await CoinGeckoClient.coins.all();
-
-        const result: Record<string, any>[] = [];
-
         const userCurrency = Currency[userObj.currency];
 
-        for (const coin of allCoins.data) {
-            if (faveCoins.favoriteCoins.includes(coin.id)) {
-                result.push({
-                    id: coin.id,
-                    name: coin.name,
-                    currency: userCurrency,
-                    price_ars: coin.market_data.current_price.ars,
-                    price_usd: coin.market_data.current_price.usd,
-                    price_eur: coin.market_data.current_price.eur,
-                    symbol: coin.symbol,
-                    image: coin.image.small,
-                    last_updated: coin.last_updated,
-                });
+        let searchCoins: string;
+        for (let i = 0; i < faveCoins.favoriteCoins.length; i++) {
+            const coin = faveCoins.favoriteCoins[i];
+
+            if (i === 0) {
+                searchCoins = coin;
+            } else {
+                searchCoins += `%2C${coin}`;
             }
+        }
+
+        const url = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${userCurrency}&ids=${searchCoins}&per_page=50&page=1`;
+        const allCoins = await axios.get(url);
+        let result: Record<string, any>[] = [];
+
+        for (const coin of allCoins.data) {
+            result.push({
+                id: coin.id,
+                name: coin.name,
+                currency: userCurrency,
+                price: coin.current_price,
+                symbol: coin.symbol,
+                image: coin.image,
+                last_updated: coin.last_updated,
+            });
+        }
+
+        result = result.sort((a, b) => {
+            return b.price - a.price;
+        });
+        result = result.slice(0, 25);
+
+        const stop: number = Number(req.params.number);
+        if (stop && stop < 26) {
+            result = result.slice(0, stop);
         }
 
         const response = {

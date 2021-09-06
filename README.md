@@ -48,8 +48,8 @@ yarn test register
 -   [GET] /coins:
     Solo necesita el token de un usuario logueado porque muestra el precio de las monedas en la divisa favorita del usuario
 
--   [GET] /coins/top:
-    Solo necesita el token del usuario logueado
+-   [GET] /coins/top/:number:
+    Solo necesita el token del usuario logueado. El parametro de number es opcional y fija el maximo de monedas que se muestran, puede ir del 1 al 25, si no se envia el defecto es 25
 
 -   [POST] /coins/favorites/:id:
     Espera el token del usuario logueado y el id de la moneda que se quiere agregar a favoritos. Ej /coins/favorites/bitcoin
