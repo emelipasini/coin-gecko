@@ -47,4 +47,24 @@ export default class coinsDB {
             return { error: e };
         }
     }
+
+    static async saveFavorites(username: string, favoriteCoins: string[]) {
+        try {
+            const user = await coins.findOne({ username });
+            if (!user) {
+                const faveCoins = new favoriteCoin(username, favoriteCoins);
+                await coins.insertOne(faveCoins);
+            } else {
+                await coins.updateOne(
+                    { username: username },
+                    { $addToSet: { favoriteCoins: favoriteCoins } }
+                );
+            }
+
+            return { success: true };
+        } catch (e) {
+            console.error(`Error occurred while logging in user, ${e}`);
+            return { error: e };
+        }
+    }
 }

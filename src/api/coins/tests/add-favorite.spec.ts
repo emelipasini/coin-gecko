@@ -13,11 +13,11 @@ let coinsCollection: Collection;
 let client: MongoClient;
 let user: User;
 
-describe("Logging in account", () => {
+describe("Add favorite coin", () => {
     beforeAll(async () => {
         client = await MongoClient.connect(config.get("dbURI"));
-        usersDB.injectDB(client);
-        coinsDB.injectDB(client);
+        await usersDB.injectDB(client);
+        await coinsDB.injectDB(client);
 
         usersCollection = client.db(config.get("dbName")).collection("users");
         coinsCollection = client

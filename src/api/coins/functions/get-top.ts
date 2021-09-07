@@ -15,6 +15,23 @@ export async function getTop(req: Request, res: Response) {
             return res.status(401).send({ message: "The session has expired" });
         }
 
+        const stop: number = Number(req.params.number);
+        const result = await getAndSortCoins(userObj, stop);
+
+        const response = {
+            message: "success",
+            coinsAmmount: result.length,
+            data: result,
+        };
+
+        res.status(200).send(response);
+    } catch (e) {
+        res.status(500).json(e);
+    }
+}
+
+export async function getAndSortCoins(userObj: User, stop?: number) {
+    try {
         const faveCoins = await coinsDB.getFavorites(userObj.username);
         const userCurrency = Currency[userObj.currency];
 
@@ -50,20 +67,12 @@ export async function getTop(req: Request, res: Response) {
         });
         result = result.slice(0, 25);
 
-        const stop: number = Number(req.params.number);
         if (stop && stop < 26) {
             result = result.slice(0, stop);
         }
 
-        const response = {
-            status: 200,
-            message: "success",
-            coinsAmmount: result.length,
-            data: result,
-        };
-
-        res.send(response);
-    } catch (e) {
-        res.status(500).json(e);
+        return result;
+    } catch (error) {
+        return error;
     }
 }

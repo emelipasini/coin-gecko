@@ -16,7 +16,7 @@ let user: User;
 describe("Logging in account", () => {
     beforeAll(async () => {
         client = await MongoClient.connect(config.get("dbURI"));
-        usersDB.injectDB(client);
+        await usersDB.injectDB(client);
 
         usersCollection = client.db(config.get("dbName")).collection("users");
         sessionsCollection = client
