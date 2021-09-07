@@ -52,7 +52,7 @@ describe("Get top coins", () => {
         expect(res[3].price).toBeGreaterThan(res[4].price);
     });
 
-    it.only("should get the user coins sorted", async () => {
+    it("should get the user coins sorted", async () => {
         const res = await getAndSortCoins(user, 26);
 
         expect(res.length).toBe(25);
